@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-do app</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/8535745612.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="todo-app">
+                <div class="app-title">
+                    <h2>To-do app</h2>
+                </div>
+                <div class="row">
+                    <input type="text" id="input-box" placeholder="add your tasks" v-model="taskName" @keyup.enter="addTask">
+                    <button @click="addTask"><i class="fa-solid fa-plus"></i></button>
+                </div>
+                <div id="tasks-count">
+                    Total tasks : <p id="tasks-count-value"> {{countTasks}}</p>
+                    </div> 
+                <ul id="list-container">
+                    <li v-for="task of tasks" :key="task.id" :class="{completed: task.state === true}">
+                        {{ task.taskName }}
+                        <div class="block-button">
+                            <span><i class="fa-solid fa-check" v-show="!task.state" @click="updateTask(task)"></i></span>
+                            <span><i class="fa-solid fa-x" v-show="task.state" aria-hidden="true" @click="updateTask(task)"></i></span>
+                            <span><i class="fa-solid fa-trash remove" aria-hidden="true" @click="deleteTask(task)"></i></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: "#app",
+            data: {
+                taskName : '',
+                buttonAdd: '',
+                tasks: [],
+                state: false,
+                nextTaskId: 0,
+                countTasks: 0
+            },
+            methods: {
+                addTask() {
+                    this.tasks.push({
+                        id: this.nextTaskId++,
+                        taskName: this.taskName,
+                        state: this.state,
+                        });
+                    this.countTasks++;
+                    console.log(this.tasks)
+                },
+                updateTask(task) {      
+                    task.state = !task.state;
+                },
+                deleteTask(task) {
+                    this.tasks = this.tasks.filter(t => t.id !== task.id);
+                    this.countTasks--;
+                }
+            }
+        })
+    </script>
+    
+</body>
+</html>
