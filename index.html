@@ -19,7 +19,7 @@
                     <button @click="addTask"><i class="fa-solid fa-plus"></i></button>
                 </div>
                 <div id="tasks-count">
-                    Total tasks : <p id="tasks-count-value"> {{countTasks}}</p>
+                    Total tasks : <p id="tasks-count-value"> {{totalTask}}</p>
                     </div> 
                 <ul id="list-container">
                     <li v-for="task of tasks" :key="task.id" :class="{completed: task.state === true}">
@@ -54,7 +54,6 @@
                         taskName: this.taskName,
                         state: this.state,
                         });
-                    this.countTasks++;
                     console.log(this.tasks)
                 },
                 updateTask(task) {      
@@ -62,7 +61,11 @@
                 },
                 deleteTask(task) {
                     this.tasks = this.tasks.filter(t => t.id !== task.id);
-                    this.countTasks--;
+                }
+            },
+            computed: {
+                totalTask() {
+                    return this.tasks.length;
                 }
             }
         })
